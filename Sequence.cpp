@@ -104,6 +104,7 @@ string Sequence::MutateSequence(string S, bool verbose) {
             break;
         }
     }
+    if (verbose) cout << endl;
 
     return MutatedS;
 }
@@ -113,7 +114,44 @@ int Sequence::LevenshteinDistance(string S1, string S2) {
     Codigo de Distancia de Levenshtein extraido de:
     https://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance#C++
 */
-    return 0;
+    string source, target;
+    if (S1.size() >= S2.size()) {
+        source = S2;
+        target = S1;
+    }
+    else {
+        source = S1;
+        target = S2;
+    }
+    int min_size = (int)source.size();
+    int max_size = (int)target.size();
+    vector<int> lev_dist(min_size + 1);
+
+    lev_dist[0] = 0;
+    int i, j;
+    for (i = 1; i <= min_size; i++) 
+        lev_dist[i] = lev_dist[i - 1] + gap_score;
+
+    for (j = 1; j <= max_size; j++) {
+        int previous_diagonal = lev_dist[0];
+        int previous_diagonal_save;
+        lev_dist[0] += gap_score;
+
+        for (i = 1; i <= min_size; i++) {
+            previous_diagonal_save = lev_dist[i];
+            if (source[i - 1] == target[j - 1])
+                lev_dist[i] = previous_diagonal;
+            else
+                lev_dist[i] = min(
+                    min(lev_dist[i - 1] + gap_score,
+                        lev_dist[i] + gap_score),
+                        previous_diagonal + mismatch_score
+                );
+            previous_diagonal = previous_diagonal_save;
+        }
+    }
+    
+    return lev_dist[min_size];
 }
 
 int Sequence::NeedlemanWunsch(string S1, string S2) {

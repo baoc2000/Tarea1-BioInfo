@@ -11,6 +11,7 @@ int main() {
     string MutatedS1 = Tarea1.MutateSequence(S1);
     Tarea1.PrintSequence(MutatedS1);
 
-    cout << "Score: " << Tarea1.NeedlemanWunsch(S1, MutatedS1) << endl;
+    cout << "Score:    :" << Tarea1.NeedlemanWunsch(S1, MutatedS1) << endl;
+    cout << "Distancia :" << Tarea1.LevenshteinDistance(S1, MutatedS1) << endl;
     return 0;
 }
