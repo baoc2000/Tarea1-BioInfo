@@ -20,7 +20,8 @@ class Sequence {
         ~Sequence();
         string GenSequence();
         void PrintSequence(string);
-        string MutateSequence(string, bool = false);
+        string MutateSequence(string, int, bool = false);
+        string MutateSequenceOnce(string, bool = false);
         int LevenshteinDistance(string, string);
         int NeedlemanWunsch(string, string);
 };

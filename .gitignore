@@ -1,1 +1,7 @@
 a.out
+*.o
+pbPlots.cpp
+pbPlots.hpp
+supportLib.cpp
+supportLib.hpp
+/Plots

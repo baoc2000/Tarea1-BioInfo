@@ -47,16 +47,14 @@ void Sequence::PrintSequence(string S) {
             }
             cout << S.substr(i + j * 10, 10) << endl;
         }    
-        catch(const out_of_range& e) {}
+        catch(const out_of_range& e) {
+            cout << endl;
+        }
     }
     cout << endl;
 }
 
-string Sequence::MutateSequence(string S, bool verbose) {
-    int M = rand() % (MAX_MUTATIONS + 1);
-
-    cout << "Cantidad de Mutaciones: " << M << endl << endl;
-
+string Sequence::MutateSequence(string S, int M, bool verbose) {
     int i, j;
     int pos, mutation;
     string MutatedS = S;
@@ -103,6 +101,58 @@ string Sequence::MutateSequence(string S, bool verbose) {
         default:
             break;
         }
+    }
+    if (verbose) cout << endl;
+
+    return MutatedS;
+}
+
+string Sequence::MutateSequenceOnce(string S, bool verbose) {
+    int i;
+    int pos, mutation;
+    string MutatedS = S;
+    string new_letter;
+    string replace_alfabet;
+
+    mutation = rand() % 3; //0 - Insercion, 1 - Borrado, 2 - Reemplazo
+    pos = rand() % MutatedS.size();
+
+    switch (mutation) {
+    case 0:
+        // Insercion
+        new_letter.push_back(alfabeto[rand() % (sizeof(alfabeto) - 1)]);
+
+        if (verbose) cout << "Insercion de " << new_letter << " en posicion " << pos << endl;
+        MutatedS.insert(pos, new_letter);
+
+        new_letter.clear();
+        break;
+    
+    case 1:
+        // Borrado
+        if (verbose) cout << "Borrado de " << MutatedS.at(pos) << " en posicion " << pos << endl;
+        MutatedS.erase(pos, 1);
+        break;
+    
+    case 2:
+        //Reemplazo
+        for (i = 0; i < 6; i++) {
+            if (alfabeto[i] != MutatedS.at(pos)) {
+                replace_alfabet.push_back(alfabeto[i]);
+            }
+        }
+        new_letter.push_back(replace_alfabet.at(rand() % replace_alfabet.size()));
+
+        if (verbose) 
+            cout << "Reemplazo de " << MutatedS.at(pos) << " por " << new_letter << " en posicion " << pos << endl;
+        MutatedS.replace(pos, 1, new_letter);
+
+        new_letter.clear();
+        replace_alfabet.clear();
+        break;
+    
+    default:
+        break;
     }
     if (verbose) cout << endl;
 
