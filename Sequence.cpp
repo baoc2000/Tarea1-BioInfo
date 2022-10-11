@@ -1,6 +1,7 @@
 #include <ctime>
 #include <unistd.h>
 #include <iostream>
+#include <stdlib.h>
 #include "Sequence.h"
 
 using namespace std;
@@ -12,7 +13,6 @@ Sequence::Sequence(int ms, int mms, int gs) {
     match_score = ms;
     mismatch_score = mms;
     gap_score = gs;
-    n = m = MAX_N;
 
     srand((unsigned)time(NULL) * getpid());
 }
@@ -119,7 +119,40 @@ int Sequence::LevenshteinDistance(string S1, string S2) {
 int Sequence::NeedlemanWunsch(string S1, string S2) {
 /*
     Codigo de Needleman-Wunsch extraido de:
-    //https://github.com/ldfaiztt/Algorithms-2/blob/master/Dynamic%20Programming/Needleman-Wunsch.cpp
+    https://github.com/ldfaiztt/Algorithms-2/blob/master/Dynamic%20Programming/Needleman-Wunsch.cpp
+    apoyado de:
+    https://en.wikipedia.org/wiki/Needleman%E2%80%93Wunsch_algorithm
 */
-    return 0;
+
+    int **dp;
+    int len1 = (int)S1.size();
+    int len2 = (int)S2.size();
+    int Max_length = (len1 >= len2) ? len1 : len2;
+
+    int i, j;
+    dp = (int **)malloc((Max_length + 1) * sizeof(int *));
+    for (i = 0; i <= Max_length; i++)
+        dp[i] = (int *)malloc((Max_length + 1) * sizeof(int));
+
+    for (i = 0; i <= len1; i++) dp[i][0] = i * -gap_score;
+    for (i = 0; i <= len2; i++) dp[0][i] = i * -gap_score;
+
+    for (i = 1; i <= len1; i++) {
+        for (j = 1; j <= len2; j++) {
+            int S = (S1[i - 1] == S2[j - 1]) ? match_score : -mismatch_score;
+            dp[i][j] = max(
+                    dp[i - 1][j - 1] + S,
+                max(dp[i - 1][j] - gap_score, 
+                    dp[i][j - 1] - gap_score
+            ));
+        }
+    }
+
+    int final_score = dp[len1][len2];
+
+    for (i = 0; i <= Max_length; i++)
+        free(dp[i]);
+    free(dp);
+
+    return final_score;
 }

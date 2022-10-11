@@ -14,7 +14,6 @@ class Sequence {
         int match_score;
         int mismatch_score;
         int gap_score;
-        int n, m;
     
     public:
         Sequence(int, int, int);
