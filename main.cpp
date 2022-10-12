@@ -66,6 +66,50 @@ int main() {
     }
     else if (input.compare("B") == 0) {
         cout << "Ejecutando Pregunta B..." << endl;
+        int i;
+        vector<double> X_PB;
+        vector<double> Data_PB;
+
+        string S_PB = Tarea1.GenSequence();
+        string MutatedS_PB1, MutatedS_PB2;
+        for (i = 0; i <= 300; i++) {
+            X_PB.push_back((double)i);
+            MutatedS_PB1 = Tarea1.MutateSequence(S_PB, i);
+            MutatedS_PB2 = Tarea1.MutateSequence(S_PB, i);
+            Data_PB.push_back((double)Tarea1.LevenshteinDistance(MutatedS_PB1, MutatedS_PB2));
+        }
+
+        //GRAFICO PREGUNTA B
+        RGBABitmapImageReference *imageRef = CreateRGBABitmapImageReference();
+        StringReference *ErrorMsg = CreateStringReferenceLengthValue(0, L' ');
+
+        ScatterPlotSeries *series = GetDefaultScatterPlotSeriesSettings();
+        series -> xs = &X_PB;
+        series -> ys = &Data_PB;
+
+        ScatterPlotSettings *settings = GetDefaultScatterPlotSettings();
+        settings -> width = 600;
+        settings -> height = 400;
+        settings -> title = toVector(L"Pregunta b)");
+        settings -> xLabel = toVector(L"Numero de mutaciones M");
+        settings -> yLabel = toVector(L"Distancia de Levenshtein D'");
+        settings -> scatterPlotSeries -> push_back(series);
+
+        bool success = DrawScatterPlotFromSettings(imageRef, settings, ErrorMsg);
+        
+        if (success) {
+            vector<double> *pngData = ConvertToPNG(imageRef->image);
+            WriteToFile(pngData, "./Plots/PreguntaB.png");
+            DeleteImage(imageRef->image);
+            cout << "Grafico Pregunta b) generado." << endl;
+        }
+        else {
+            cerr << "Error: ";
+            for (wchar_t c: *ErrorMsg->string)
+                wcerr << c;
+            cerr << endl;
+        }
+        FreeAllocations();
     }
     else if (input.compare("C") == 0) {
         cout << "Ejecutando Pregunta C..." << endl;

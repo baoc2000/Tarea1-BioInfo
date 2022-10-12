@@ -5,7 +5,6 @@
 #include <vector>
 
 #define MAX_N 200
-#define MAX_MUTATIONS 300
 
 using namespace std;
 
