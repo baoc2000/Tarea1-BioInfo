@@ -17,7 +17,7 @@ class Sequence {
     public:
         Sequence(int, int, int);
         ~Sequence();
-        string GenSequence();
+        string GenSequence(bool = false);
         void PrintSequence(string);
         string MutateSequence(string, int, bool = false);
         string MutateSequenceOnce(string, bool = false);

@@ -19,12 +19,13 @@ Sequence::Sequence(int ms, int mms, int gs) {
 
 Sequence::~Sequence() {}
 
-string Sequence::GenSequence() {
+string Sequence::GenSequence(bool verbose) {
 /*
     Codigo de generacion de strings extraido de:
     https://stackoverflow.com/questions/440133/how-do-i-create-a-random-alpha-numeric-string-in-c
 */
-    cout << "Generando secuencia..." << endl << endl;
+    if (verbose)
+        cout << "Generando secuencia..." << endl << endl;
 
     string temp_s;
     temp_s.reserve(MAX_N);
